@@ -9,3 +9,7 @@ variable "project" {
 variable "environment" {
     type = string
 }
+
+variable "public_subnet_cidr" {
+ type = list(string)
+}
