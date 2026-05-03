@@ -41,3 +41,34 @@ resource "aws_subnet" "public" {
     )
 }
 
+resource "aws_subnet" "private" {
+  count = length(var.private_subnet_cidr)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_cidr[count.index]
+  availability_zone = local.az_info[count.index]
+   #slice(list, start, end) start = 0 → include end = 2 → stop before index 2 (to get 0 & 1 from list)
+ 
+
+  tags = merge(
+        local.common_tags,
+        {
+            Name = "${var.project}-${var.environment}-private-${local.az_info[count.index]}"
+        }
+    )
+}
+
+resource "aws_subnet" "database" {
+  count = length(var.database_subnet_cidr)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.database_subnet_cidr[count.index]
+  availability_zone = local.az_info[count.index]
+   #slice(list, start, end) start = 0 → include end = 2 → stop before index 2 (to get 0 & 1 from list)
+ 
+
+  tags = merge(
+        local.common_tags,
+        {
+            Name = "${var.project}-${var.environment}-private-${local.az_info[count.index]}"
+        }
+    )
+}
